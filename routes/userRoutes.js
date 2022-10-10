@@ -47,12 +47,13 @@ router.get("/getPerson/:id", (req, res) => {
 router.put("/findEditThenSave/:id", (req, res) => {
   Person.findByIdAndUpdate(
     { _id: req.params.id },
-    { $push: { favoriteFoods: "frite" } },
-    { new: true },
+    { ...req.body },
+    // { $push: { favoriteFoods: "frite" } },
+    // { new: true },
     (err, data) => {
       if (err) throw err;
       else {
-        res.json(data);
+        res.json(req.body);
       }
     }
   );
@@ -62,12 +63,11 @@ router.put("/findEditThenSave/:id", (req, res) => {
 router.put("/findNameAndSetAge/:name", (req, res) => {
   Person.findOneAndUpdate(
     { name: req.params.name },
-    { $set: { age: 20 } },
-    { new: true },
+    { ...req.body },
     (err, data) => {
       if (err) throw err;
       else {
-        res.json(data);
+        res.json(req.body);
       }
     }
   );
@@ -75,7 +75,7 @@ router.put("/findNameAndSetAge/:name", (req, res) => {
 
 //delete on person by its id and returns the doccument deleted in DB
 router.delete("/deleteOne/:id", (req, res) => {
-  person.findByIdAndRemove({ _id: req.params.id }, (err, data) => {
+  Person.findByIdAndRemove({ _id: req.params.id }, (err, data) => {
     if (err) throw err;
     else {
       res.json(data);
